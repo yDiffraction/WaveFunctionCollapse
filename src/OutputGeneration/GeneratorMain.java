@@ -1,3 +1,5 @@
+import PatternDetermination.Pattern;
+
 public class GeneratorMain {
   Patterns[] patterns;
   
