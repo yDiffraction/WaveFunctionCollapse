@@ -11,7 +11,8 @@ public class Main {
              {1, 1, 1},
              {1, 1, 1}},
         1)};
+        Set colors;
         
-        OutputGenerator OutputGen = new OutputGenerator(patterns);
+        OutputGenerator OutputGen = new OutputGenerator(patterns, colors);
     }
 }
