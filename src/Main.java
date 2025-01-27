@@ -11,6 +11,6 @@ public class Main {
              {1, 1, 1}},
         1)};
         
-        OutputGenerator OutputGen = new OutputGenerator();
+        OutputGenerator OutputGen = new OutputGenerator(patterns);
     }
 }
