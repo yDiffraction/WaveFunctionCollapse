@@ -1,5 +1,6 @@
 import OutputGenerator.OutputGenerator;
 import PatternDetermination.PatternDeterminatiom;
+import PatternDetermination.Pattern;
 
 public class Main {
     public static void main(String[] args) {
