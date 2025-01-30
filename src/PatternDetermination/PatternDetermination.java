@@ -1,8 +1,12 @@
+package PatternDetermination;
+
 import java.awt.*;
 import java.io.*;
-public class PatternDetermination {
-  public Set<Integer> allcolors = new HashSet<Integer>();
-  Pattern[] patterns = new Pattern[];
+import java.util.Set;
+
+public class PatternDetermination { // filme wie falsch das ist
+  public Set<Integer> allcolors;
+  Pattern[] patterns = new Pattern[0];
   File file = new File(“WaveFunctionCollapse/src/PatternDetermination/Test.png”);
   
   public PatternDetermination() {
