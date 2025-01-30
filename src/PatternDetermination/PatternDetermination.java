@@ -16,7 +16,7 @@ public class PatternDetermination {
 			}
     }
     
-    // alle felder mit mindestens einem abstand von 1 zum rand abgehen
+    // alle felder mit mindestens einem abstand von 1 zum rand abgehen 
     for (int h = 1; h < image.getHeight()-1; h++) {
       for (int w = 1; w < image.getWidth()-1; w++) {
         patterns.push(new Pattern());
