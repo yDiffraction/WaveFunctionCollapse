@@ -13,6 +13,7 @@ public class Superstate {
     }
   }
 
+  //calculate how "well defined" the pixel is
   public int getNumberOfPossibilities() {
     int r=0;
     for (boolean i : possible_colors) {
@@ -24,6 +25,7 @@ public class Superstate {
   }
 }
 
+//collapses the pixel. runs a recursion for collapse of nearby pixels after
 public void collapse() {
   return;
 }
