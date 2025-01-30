@@ -15,7 +15,7 @@ public class GeneratorMain {
 
   public void run() {
     while (True) {
-      return;
+      collapse();
     }
 
   private void collapse() {
