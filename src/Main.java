@@ -16,8 +16,8 @@ public class Main {
 
         //Determine a set of all colors in use
         Set colors = new HashSet<Int>();
-        for (int[][] x : patterns) {
-            for (int[] y : x) {
+        for (Pattern x : patterns) {
+            for (int[] y : x.map) {
                 for (int z : y) {
                     colors.add(z)
                 }
