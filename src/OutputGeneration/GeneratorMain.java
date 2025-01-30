@@ -13,11 +13,13 @@ public class GeneratorMain {
     this.map = new Superstate[height][width](patterns.length, colors.length);
   }
 
+  //main loop
   public void run() {
     while (True) {
       collapse();
     }
 
+  //choose the right pixel to collapse, then collapse it
   private void collapse() {
     Superstate minState;
     int minPossibilities = colors.length;
@@ -30,5 +32,6 @@ public class GeneratorMain {
       }
     }
 
+    //tell the state to collapse. it will run a recursion collapsing all affected states
     minState.collapse();
 }
