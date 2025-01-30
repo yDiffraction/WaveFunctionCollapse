@@ -12,4 +12,14 @@ public class Superstate {
       possible_colors[i] = 1;
     }
   }
+
+  public int getNumberOfPossibilities() {
+    int r=0;
+    for (boolean i : possible_colors) {
+      if (i) {
+        r++;
+      }
+    }
+    return r;
+  }
 }
