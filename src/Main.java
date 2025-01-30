@@ -25,5 +25,6 @@ public class Main {
         }
         
         OutputGenerator OutputGen = new OutputGenerator(patterns, colors);
+        OutputGen.run();
     }
 }
