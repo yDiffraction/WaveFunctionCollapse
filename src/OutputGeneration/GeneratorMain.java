@@ -8,6 +8,7 @@ public class GeneratorMain {
   Pattern[] patterns;
   Set<Integer> colors;
   Superstate[][] map;
+  public boolean collapsed = false;
 
   public GeneratorMain(Pattern[] patterns, Set<Integer> colors, int width, int height) {
     System.out.println("Generator started");
@@ -19,7 +20,7 @@ public class GeneratorMain {
 
   //main loop
   public void run() {
-    while (true) {
+    while (!collapsed) {
       collapse();
     }
     //choose the right pixel to collapse, then collapse it
