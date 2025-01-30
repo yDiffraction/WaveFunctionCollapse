@@ -13,7 +13,7 @@ public class PatternDetermination {
     for (int h = 0; h < image.getHeight(); h++) {
 			for int w = 0; w < image.getWidth(); w++) {
 				allcolors.add(getRGB(w,h));
-      }
+			}
     }
     
     // alle felder mit mindestens einem abstand von 1 zum rand abgehen
