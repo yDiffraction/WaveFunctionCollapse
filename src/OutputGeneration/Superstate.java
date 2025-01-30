@@ -23,9 +23,9 @@ public class Superstate {
     }
     return r;
   }
-}
 
-//collapses the pixel. runs a recursion for collapse of nearby pixels after
-public void collapse() {
-  return;
+  //collapses the pixel. runs a recursion for collapse of nearby pixels after
+  public void collapse() {
+    return;
+  }
 }
