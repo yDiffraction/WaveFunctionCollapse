@@ -23,3 +23,7 @@ public class Superstate {
     return r;
   }
 }
+
+public void collapse() {
+  return;
+}
