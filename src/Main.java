@@ -12,9 +12,9 @@ public class Main {
              {1, 1, 1}},
         1)};
         Set colors = new HashSet<Int>();
-        for (x : patterns) {
-            for (y : x) {
-                for (z : y) {
+        for (int[][] x : patterns) {
+            for (int[] y : x) {
+                for (int z : y) {
                     colors.add(z)
                 }
             }   
