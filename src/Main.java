@@ -6,11 +6,15 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
         PatternDetermination patternGen = new PatternDetermination();
+
+        //List of patterns for use in generating image
         Pattern[] patterns = {new Pattern(
             {{0, 1, 1},
              {1, 1, 1},
              {1, 1, 1}},
         1)};
+
+        //Determine a set of all colors in use
         Set colors = new HashSet<Int>();
         for (int[][] x : patterns) {
             for (int[] y : x) {
