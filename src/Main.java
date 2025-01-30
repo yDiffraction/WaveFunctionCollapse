@@ -11,7 +11,14 @@ public class Main {
              {1, 1, 1},
              {1, 1, 1}},
         1)};
-        Set colors;
+        Set colors = new HashSet<Int>();
+        for (x : patterns) {
+            for (y : x) {
+                for (z : y) {
+                    colors.add(z)
+                }
+            }   
+        }
         
         OutputGenerator OutputGen = new OutputGenerator(patterns, colors);
     }
