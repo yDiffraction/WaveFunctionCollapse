@@ -10,7 +10,7 @@ public class GenHub {
     public GeneratorMain outputGen;
 
     public Set<Integer> colors;
-    public Pattern[] patterns = new Pattern[0];
+    public Pattern[] patterns = new Pattern[1];
 
 
     public GenHub() {
@@ -24,16 +24,19 @@ public class GenHub {
                 {0,0,0}
         }, 1);
 
-        // all Colors stored in a Set
-        colors = new HashSet<Integer>();for (Pattern x : patterns) {
+        //all colors stored in a Set
+        colors = new HashSet<Integer>();
+        for (Pattern x : patterns) {
             for (int[] y : x.map) {
                 for (int z : y) {
                     colors.add(z);
                 }
             }
         }
-        outputGen.run();
+    }
 
+    public void genOutput() {
+        outputGen.run();
     }
 
     public void setPatterns(Pattern[] patterns) {
