@@ -14,8 +14,8 @@ public class GeneratorMain {
     System.out.println("Generator started");
     this.patterns = patterns;
     this.colors = colors;
-    this.map = new Superstate[height][width];
-    // this.map = new Superstate[height][width](patterns.length, colors.length);??
+    //this.map = new Superstate[height][width];
+    this.map = new Superstate[height][width](patterns.length, colors.length);
   }
 
   //main loop
@@ -23,9 +23,9 @@ public class GeneratorMain {
     while (!collapsed) {
       collapse();
     }
-    //choose the right pixel to collapse, then collapse it
-
   }
+  
+  //choose the right pixel to collapse, then collapse it
   private void collapse () {
     Superstate minState = new Superstate(5,5);// muss noch initialisiert werden -> Variabeln nicht korrekt
     int minPossibilities = colors.size();
