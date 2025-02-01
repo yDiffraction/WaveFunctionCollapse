@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Set;
 
 public class PatternDetermination { // filme wie falsch das ist
-  public Set<Integer> allcolors;
+  /*public Set<Integer> allcolors;//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
   Pattern[] patterns = new Pattern[0];
   File file = new File(“WaveFunctionCollapse/src/PatternDetermination/Test.png”);
   
@@ -26,5 +26,6 @@ public class PatternDetermination { // filme wie falsch das ist
         patterns.push(new Pattern());
       }
     }
-  }
+  }*/
+
 }

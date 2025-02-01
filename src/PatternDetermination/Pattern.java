@@ -1,7 +1,7 @@
 package PatternDetermination;
 
 public class Pattern {
-  public int[][] map;
+  public int[][] map; // int are colores(they are spanish!)
   public float weight;
 
   public Pattern(int[][] map, float weight) {

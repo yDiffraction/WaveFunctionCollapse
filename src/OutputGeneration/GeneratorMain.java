@@ -6,16 +6,21 @@ import java.util.Set;
 
 public class GeneratorMain {
   Pattern[] patterns;
-  Set<Integer> colors;
+  int colors;
   Superstate[][] map;
   public boolean collapsed = false;
 
-  public GeneratorMain(Pattern[] patterns, Set<Integer> colors, int width, int height) {
+  public GeneratorMain(Pattern[] patterns, int colors, int width, int height) {
     System.out.println("Generator started");
     this.patterns = patterns;
     this.colors = colors;
-    //this.map = new Superstate[height][width];
-    this.map = new Superstate[height][width](patterns.length, colors.length);
+    this.map = new Superstate[height][width];
+
+    for (int i = 0; i < this.map.length; i++) {
+      for (int j = 0; j < this.map[0].length; j++) {
+        this.map[i][j] = new Superstate(patterns.length, this.colors);
+      }
+    }
   }
 
   //main loop
@@ -27,8 +32,8 @@ public class GeneratorMain {
   
   //choose the right pixel to collapse, then collapse it
   private void collapse () {
-    Superstate minState = new Superstate(5,5);// muss noch initialisiert werden -> Variabeln nicht korrekt
-    int minPossibilities = colors.size();
+    Superstate minState = new Superstate(patterns.length, colors);// muss noch initialisiert werden -> Variabeln nicht korrekt
+    int minPossibilities = colors;
     for (Superstate[] x : map) {
       for (Superstate y : x) {
         if (y.getNumberOfPossibilities() <= minPossibilities) {

@@ -9,30 +9,32 @@ public class GenHub {
     public PatternDetermination patternGen;
     public GeneratorMain outputGen;
 
-    public Set<Integer> colors;
+    public int colors;//die anzahl an Farben in einem Int reichen aus als Info, weil bei z.B. 5 Farben gibt es Farben 0, 1, 2, 3, 4 ->
     public Pattern[] patterns = new Pattern[1];
 
 
     public GenHub() {
-        patternGen = new PatternDetermination();
-        outputGen = new GeneratorMain(patterns, colors, 20, 20);
-
         //List of patterns for use in generating image
         patterns[0] = new Pattern(new int[][]{
                 {0,0,0},
                 {0,1,0},
                 {0,0,0}
         }, 1);
+        colors = 2;
+
+        patternGen = new PatternDetermination();
+        outputGen = new GeneratorMain(patterns, colors, 20, 20);
+
 
         //all colors stored in a Set
-        colors = new HashSet<Integer>();
+        /*colors = new HashSet<Integer>(); -> useless
         for (Pattern x : patterns) {
             for (int[] y : x.map) {
                 for (int z : y) {
                     colors.add(z);
                 }
             }
-        }
+        }*/
     }
 
     public void genOutput() {
