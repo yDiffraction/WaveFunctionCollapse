@@ -22,16 +22,6 @@ public class GenHub {
         patternGen = new PatternDetermination();
         outputGen = new GeneratorMain(patterns, countColors, 20, 20);
 
-
-        //all colors stored in a Set
-        /*colors = new HashSet<Integer>(); -> useless
-        for (Pattern x : patterns) {
-            for (int[] y : x.map) {
-                for (int z : y) {
-                    colors.add(z);
-                }
-            }
-        }*/
     }
 
     public void genOutput() {
