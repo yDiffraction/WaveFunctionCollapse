@@ -8,4 +8,8 @@ public class Pattern {
     this.map = map;
     this.weight = weight;
   }
+
+  public int getSize() {
+    return map.length;
+  }
 }

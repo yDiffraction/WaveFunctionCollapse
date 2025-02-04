@@ -1,5 +1,7 @@
 package OutputGeneration;
 
+import PatternDetermination.Pattern;
+
 import java.util.Arrays;
 
 public class Superstate {
@@ -38,7 +40,7 @@ public class Superstate {
 
   //collapses the pixel. runs a recursion for collapse of nearby pixels after
   public void collapse() {
-    //choose random color for the array
+    //choose random color for the Superstate out of available
     int num_possibilities = 0;
     for (boolean i : possible_colors) {
       if (i) {
@@ -58,10 +60,18 @@ public class Superstate {
       }
       rand--;
     }
+    update_state();
   }
 
   public void update_state() {
-    return;
+    //Update own possible patterns
+    for (int i = 0; i < possible_patterns.length; i++) {
+      if (!possible_patterns[i]) {
+        continue;
+      }
+      Pattern p = generatorMain.getPatterns()[i];
+      int mid = Pattern.map.length;
+    }
   }
   private Superstate getST_By_Coords(int deltX, int deltY) {
     return generatorMain.map[(x + deltX) % generatorMain.map.length][(y + deltY) % generatorMain.map[0].length];
