@@ -130,10 +130,22 @@ public class Superstate {
   }
 
   private Superstate getST_By_Delta_Coords(int deltX, int deltY) {
-    return generatorMain.map[(x + deltX) % generatorMain.map.length][(y + deltY) % generatorMain.map[0].length];
+    return generatorMain.map[(((x + deltX) % generatorMain.map.length) + generatorMain.map.length) % generatorMain.map.length][(((y + deltY) % generatorMain.map[0].length) + generatorMain.map.length) % generatorMain.map.length];
   }
 
   public boolean get_color_possible(int index) {
     return possible_colors[index];
+  }
+
+  public int print_color() {
+    if (getNumberOfPossibilities() != 1) {
+      return -1;
+    }
+    for (int i = 0; i < possible_colors.length; i++) {
+      if (possible_colors[i]) {
+        return i;
+      }
+    }
+    return -2;
   }
 }
