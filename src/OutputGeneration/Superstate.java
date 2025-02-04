@@ -16,7 +16,7 @@ public class Superstate {
     }
   }
 
-  //calculate how "well defined" the pixel is
+  //calculate how "well-defined" the pixel is
   public int getNumberOfPossibilities() {
     int r = 0;
     for (boolean i : possible_colors) {
