@@ -69,7 +69,7 @@ public class Superstate {
       if (!possible_patterns[i]) {
         continue;
       }
-      Pattern p = generatorMain.getPatterns()[i];
+      Pattern p = generatorMain.getPattern(i);
       int mid = p.map.length;
     }
   }

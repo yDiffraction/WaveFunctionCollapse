@@ -46,4 +46,8 @@ public class GeneratorMain {
     //tell the state to collapse. it will run a recursion collapsing all affected states
     minState.collapse();
   }
+
+  public Pattern getPattern(int index) {
+    return patterns[index];
+  }
 }
