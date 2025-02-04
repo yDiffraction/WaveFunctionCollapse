@@ -3,10 +3,17 @@ package OutputGeneration;
 import java.util.Arrays;
 
 public class Superstate {
+  int x;
+  int y;
+  GeneratorMain generatorMain;
   boolean[] possible_patterns;
   boolean[] possible_colors;
 
-  public Superstate(int num_patterns, int num_colors) {
+  public Superstate(int x, int y, GeneratorMain generatorMain, int num_patterns, int num_colors) {
+    this.x = x;
+    this.y = y;
+    this.generatorMain = generatorMain;
+
     //initialize possible_patterns and possible_colors
     this.possible_patterns = new boolean[num_patterns];
     this.possible_colors = new boolean[num_colors];
@@ -55,5 +62,8 @@ public class Superstate {
 
   public void update_state() {
     return;
+  }
+  private Superstate getST_By_Coords(int deltX, int deltY) {
+    return generatorMain.map[(x + deltX) % generatorMain.map.length][(y + deltY) % generatorMain.map[0].length];
   }
 }

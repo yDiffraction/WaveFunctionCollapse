@@ -18,7 +18,7 @@ public class GeneratorMain {
 
     for (int i = 0; i < this.map.length; i++) {
       for (int j = 0; j < this.map[0].length; j++) {
-        this.map[i][j] = new Superstate(patterns.length, this.colors);
+        this.map[i][j] = new Superstate(i, j, this, patterns.length, this.colors);
       }
     }
   }
@@ -32,7 +32,7 @@ public class GeneratorMain {
   
   //choose the right pixel to collapse, then collapse it
   private void collapse () {
-    Superstate minState = new Superstate(patterns.length, colors);// muss noch initialisiert werden -> Variabeln nicht korrekt
+    Superstate minState = new Superstate(0,0, this, patterns.length, colors);// muss noch initialisiert werden -> Variabeln nicht korrekt
     int minPossibilities = colors;
     for (Superstate[] x : map) {
       for (Superstate y : x) {
