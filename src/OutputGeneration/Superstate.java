@@ -70,10 +70,28 @@ public class Superstate {
         continue;
       }
       Pattern p = generatorMain.getPattern(i);
-      int mid = p.map.length;
+      int mid = p.map.length / 2;
+      boolean possible = true;
+      for (int x = 0; x < p.getSize(); x++) {
+        for (int y = 0; y < p.getSize(); y++) {
+          if (!getST_By_Delta_Coords(x - mid, y - mid).get_color_possible(p.map[x][y])) {
+            possible = false;
+          }
+        }
+      }
+      if (!possible) {
+        possible_patterns[i] = false;
+      }
     }
+
+    //Update surrounding possible colors
   }
-  private Superstate getST_By_Coords(int deltX, int deltY) {
+
+  private Superstate getST_By_Delta_Coords(int deltX, int deltY) {
     return generatorMain.map[(x + deltX) % generatorMain.map.length][(y + deltY) % generatorMain.map[0].length];
+  }
+
+  public boolean get_color_possible(int index) {
+    return possible_colors[index];
   }
 }
