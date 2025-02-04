@@ -70,7 +70,7 @@ public class Superstate {
         continue;
       }
       Pattern p = generatorMain.getPatterns()[i];
-      int mid = Pattern.map.length;
+      int mid = p.map.length;
     }
   }
   private Superstate getST_By_Coords(int deltX, int deltY) {
