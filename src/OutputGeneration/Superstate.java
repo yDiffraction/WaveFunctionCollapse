@@ -9,7 +9,7 @@ public class Superstate {
   int y;
   GeneratorMain generatorMain;
   boolean[] possible_patterns;
-  boolean[] possible_colors;
+  public boolean[] possible_colors;
 
   public Superstate(int x, int y, GeneratorMain generatorMain, int num_patterns, int num_colors) {
     this.x = x;
@@ -64,13 +64,15 @@ public class Superstate {
   }
 
   public void update_state() {
+    int pattern_size = generatorMain.getPattern(0).getSize();
+    int mid = pattern_size / 2;
+
     //Update own possible patterns
     for (int i = 0; i < possible_patterns.length; i++) {
       if (!possible_patterns[i]) {
         continue;
       }
       Pattern p = generatorMain.getPattern(i);
-      int mid = p.map.length / 2;
       boolean possible = true;
       for (int x = 0; x < p.getSize(); x++) {
         for (int y = 0; y < p.getSize(); y++) {
@@ -85,6 +87,46 @@ public class Superstate {
     }
 
     //Update surrounding possible colors
+    int[][] num_possible_colors_map = new int[pattern_size][pattern_size];
+
+    for (int x = 0; x < pattern_size; x++) {
+      for (int y = 0; y < pattern_size; y++) {
+        int num_possible_colors = 0;
+        for (boolean i : getST_By_Delta_Coords(x - mid, y - mid).possible_colors) {
+          if (i) {
+            num_possible_colors++;
+          }
+        }
+        num_possible_colors_map[x][y] = num_possible_colors;
+        Arrays.fill(getST_By_Delta_Coords(x - mid, y - mid).possible_colors, false);
+      }
+    }
+
+    for (int i = 0; i < possible_colors.length; i++) {
+      if (!possible_colors[i]) {
+        continue;
+      }
+      Pattern p = generatorMain.getPattern(i);
+      for (int x = 0; x < p.getSize(); x++) {
+        for (int y = 0; y < p.getSize(); y++) {
+          getST_By_Delta_Coords(x - mid, y - mid).possible_colors[p.map[x][y]] = true;
+        }
+      }
+    }
+
+    for (int x = 0; x < pattern_size; x++) {
+      for (int y = 0; y < pattern_size; y++) {
+        int num_possible_colors = 0;
+        for (boolean i : getST_By_Delta_Coords(x - mid, y - mid).possible_colors) {
+          if (i) {
+            num_possible_colors++;
+          }
+        }
+        if (num_possible_colors < num_possible_colors_map[x][y]) {
+          getST_By_Delta_Coords(x - mid, y - mid).update_state();
+        }
+      }
+    }
   }
 
   private Superstate getST_By_Delta_Coords(int deltX, int deltY) {
