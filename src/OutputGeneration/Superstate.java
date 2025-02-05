@@ -8,13 +8,17 @@ public class Superstate {
   int x;
   int y;
   GeneratorMain generatorMain;
+
   boolean[] possible_patterns;
   public boolean[] possible_colors;
+  int pattern_size;
 
   public Superstate(int x, int y, GeneratorMain generatorMain, int num_patterns, int num_colors) {
     this.x = x;
     this.y = y;
     this.generatorMain = generatorMain;
+
+    pattern_size = generatorMain.getPattern(0).getSize();
 
     //initialize possible_patterns and possible_colors
     this.possible_patterns = new boolean[num_patterns];
@@ -29,42 +33,63 @@ public class Superstate {
 
   //calculate how "well-defined" the pixel is
   public int getNumberOfPossibilities() {
-    int r = 0;
+    int n = 0;
     for (boolean i : possible_colors) {
       if (i) {
-        r++;
+        n++;
       }
     }
-    return r;
+    return n;
   }
 
   //collapses the pixel. runs a recursion for collapse of nearby pixels after
   public void collapse() {
     //choose random color for the Superstate out of available
-    int num_possibilities = 0;
-    for (boolean i : possible_colors) {
+    int num_possible_Pattern = 0;
+    int pattern_ID = 0;
+    for (boolean i : possible_patterns) {
       if (i) {
-        num_possibilities++;
+        num_possible_Pattern++;
       }
     }
 
-    int rand = (int) (Math.random() * num_possibilities);
-    for (int i = 0; i < possible_colors.length; i++) {
-      if (!possible_colors[i]) {
+    int rand = (int) (Math.random() * num_possible_Pattern);
+
+    for (int i = 0; i < possible_patterns.length; i++) { // farbe? oder nicht eher pattern?
+      if (!possible_patterns[i]) {
         continue;
       }
       if (rand == 0) {
-        Arrays.fill(possible_colors, false);
-        possible_colors[i] = true;
+        Arrays.fill(possible_patterns, false); // pattern wird ausgewählt
+        possible_patterns[i] = true;
+        pattern_ID = i;
         break;
       }
       rand--;
     }
+
+    // after choosing the Pattern, we set the colors of the neighbouring Superstates to the color of the chosen pattern
+
+    Pattern pattern = generatorMain.patterns[pattern_ID];
+    int mid = pattern_size / 2;
+    for (int x = 0; x < pattern_size; x++) {
+      for (int y = 0; y < pattern_size; y++) {
+        for (int i = 0; i < getST_By_Delta_Coords(x - mid, y - mid).possible_colors.length; i++) {
+          if (i == pattern.map[x][y]) {
+            Arrays.fill(getST_By_Delta_Coords(x - mid, y - mid).possible_colors, false);
+            getST_By_Delta_Coords(x - mid, y - mid).possible_colors[i] = true;
+            continue;
+          }
+
+          getST_By_Delta_Coords(x - mid, y - mid).possible_colors[i] = false;
+        }
+      }
+    }
+    //bis hier hin funktioniert der code;
     update_state();
   }
 
   public void update_state() {
-    int pattern_size = generatorMain.getPattern(0).getSize();
     int mid = pattern_size / 2;
 
     //Update own possible patterns

@@ -2,23 +2,21 @@ package OutputGeneration;
 
 import PatternDetermination.Pattern;
 
-import java.sql.SQLOutput;
-
 
 public class GeneratorMain {
   Pattern[] patterns;
-  int colors;
+  int colorsCount;
   public Superstate[][] map;
   public boolean collapsed = false;
 
-  public GeneratorMain(Pattern[] patterns, int colors, int width, int height) {
+  public GeneratorMain(Pattern[] patterns, int colorsCount, int width, int height) {
     this.patterns = patterns;
-    this.colors = colors;
+    this.colorsCount = colorsCount;
     this.map = new Superstate[height][width];
 
     for (int i = 0; i < this.map.length; i++) {
       for (int j = 0; j < this.map[0].length; j++) {
-        this.map[i][j] = new Superstate(i, j, this, patterns.length, this.colors);
+        this.map[i][j] = new Superstate(i, j, this, patterns.length, this.colorsCount);
       }
     }
   }
@@ -39,16 +37,21 @@ public class GeneratorMain {
   
   //choose the right pixel to collapse, then collapse it
   private boolean collapse () {
-    Superstate minState = new Superstate(0,0, this, patterns.length, colors);// muss noch initialisiert werden -> Variabeln nicht korrekt
-    int minPossibilities = colors;
+    int choosenSt_X = 0;
+    int choosenSt_Y = 0;
+
+    int minPossibilities = colorsCount;
     int maxPossibilities = 0;
-    for (Superstate[] x : map) {
-      for (Superstate y : x) {
-        if (y.getNumberOfPossibilities() <= minPossibilities) {
-          minState = y;
-          minPossibilities = y.getNumberOfPossibilities();
+    for (int x = 0; x < map.length; x++) {
+      for (int y = 0; y < map[0].length; y++) {
+        int possibilities = map[x][y].getNumberOfPossibilities();
+
+        if (possibilities <= minPossibilities) {
+          choosenSt_X = x;
+          choosenSt_Y = y;
+          minPossibilities = possibilities;
         }
-        maxPossibilities = Integer.max(maxPossibilities, y.getNumberOfPossibilities());
+        maxPossibilities = Math.max(maxPossibilities, possibilities);
       }
     }
 
@@ -56,7 +59,7 @@ public class GeneratorMain {
     if (maxPossibilities == 1) {
       return false;
     }
-    minState.collapse();
+    map[choosenSt_X][choosenSt_Y].collapse();
     return true;
   }
 
