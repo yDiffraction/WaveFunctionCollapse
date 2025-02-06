@@ -66,6 +66,8 @@ public class GenHub {
         countColors = 2;
 
         patternGen = new PatternDetermination();
+        patternGen.loadPatterns();
+
         outputGen = new GeneratorMain(patterns, countColors, 16, 16);
     }
 

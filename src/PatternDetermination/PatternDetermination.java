@@ -7,46 +7,51 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class PatternDetermination { // filme wie falsch das ist
+public class PatternDetermination {
   public ArrayList<Color> allColors = new ArrayList<Color>();//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
   public ArrayList<Pattern> patterns = new ArrayList<Pattern>();
-  File file = new File("./fls/Test.png");
+  File file = new File("./fls/ScalesMaze.png");
   BufferedImage image;
   
   public PatternDetermination(){
     // Bild laden
-	  this.image = null;
-	  try {
-	      image = ImageIO.read(file);
-	  } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
+	  loadImg();
+
+    
+
+  }
+  public void loadPatterns() {
+	  // determinate Patterns from inpImg
+	  for (int x = 0; x < image.getHeight(); x++) {
+		  for (int y = 0; y < image.getWidth(); y++) {
+			  Pattern pattern = new Pattern(3);
+			  for (int dX = -1; dX < 2; dX++) {
+				  for (int dY = -1; dY < 2; dY++) {
+					  int[] coords = getPxlCoordsByDeltaCoords(x, y, dX, dY);
+					  if(!allColors.contains(new Color(image.getRGB(coords[0], coords[1])))) {
+						  allColors.add(new Color(image.getRGB(coords[0], coords[1])));
+					  }
+					  pattern.setPixelColor(dX+1, dY+1, allColors.indexOf(new Color(image.getRGB(coords[0], coords[1]))));
+				  }
+			  }
+
+
+			  boolean addPattern = false;
+			  for (int i = 0; i < patterns.size(); i++) {
+				  if (Arrays.deepEquals(patterns.get(i).map, pattern.map)) {
+					  patterns.get(i).addWeight();
+					  addPattern = true;
+					  break;
+				  }
+			  }
+			  if(!addPattern) {
+				  patterns.add(pattern);
+			  }
+		  }
 	  }
-    
-	  //Loop -> bestimmung aller Patterns -> die erste Farbe ist ID/Index 0 -> Arraylist(Colors).add(neue Farbe)
-	  // Arraylist(Colors) -> allcolores 
-    // allen farben einen wert zuweisen
-    
-    for (int x = 0; x < image.getHeight(); x++) {
-      for (int y = 0; y < image.getWidth(); y++) {
-    	  Pattern pattern = new Pattern(3);
-	       for (int dX = -1; dX < 2; dX++) {
-	    	   for (int dY = -1; dY < 2; dY++) {
-	    		  int[] coords = getPxlCoordsByDeltaCoords(x, y, dX, dY);
-	    		  if(!allColors.contains(new Color(image.getRGB(coords[0], coords[1])))) {
-	    			  allColors.add(new Color(image.getRGB(coords[0], coords[1])));
-	    		  }
-	    		  pattern.setPixelColor(dX+1, dY+1, allColors.indexOf(new Color(image.getRGB(coords[0], coords[1]))));
-	    	  }
-	       }
-	       if(patterns.contains(pattern)) {
-	    	   patterns.get(patterns.indexOf(pattern)).addWeight();
-	       }else {
-	    	   patterns.add(pattern);
-	       }
-      	}
-    }
+	  System.out.println();
   }
   
   private int[] getPxlCoordsByDeltaCoords(int x, int y, int deltX, int deltY) {
@@ -54,6 +59,15 @@ public class PatternDetermination { // filme wie falsch das ist
 	  coords[0] = (((x+deltX) % image.getHeight())+image.getHeight()) % image.getHeight();
 	  coords[1] = (((y+deltY) % image.getWidth())+image.getWidth()) % image.getWidth();
 	  return coords;
+  }
+  private void loadImg() {
+	  this.image = null;
+	  try {
+		  image = ImageIO.read(file);
+	  } catch (IOException e) {
+		  // TODO Auto-generated catch block
+		  e.printStackTrace();
+	  }
   }
 
 }
