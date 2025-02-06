@@ -74,7 +74,7 @@ public class GenHub {
         System.out.println("Output");
         for (Superstate[] x : outputGen.map) {
             for (Superstate y : x) {
-                System.out.print(y.print_color() + " ");
+                System.out.print(y.printColor() + " ");
             }
             System.out.print("\n");
         }

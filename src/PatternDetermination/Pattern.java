@@ -4,8 +4,8 @@ public class Pattern {
   public int[][] map; // int are colores(they are spanish!)
   public float weight;
 
-  public Pattern(int pattern_size) {
-    map = new int[pattern_size][pattern_size];
+  public Pattern(int patternSize) {
+    map = new int[patternSize][patternSize];
     weight = 1;
   }
   public Pattern(int[][] map, int weight) {

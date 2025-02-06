@@ -7,10 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class PatternDetermination { // filme wie falsch das ist
-  public ArrayList<Color> allcolors = new ArrayList<Color>();//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
+  public ArrayList<Color> allColors = new ArrayList<Color>();//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
   public ArrayList<Pattern> patterns = new ArrayList<Pattern>();
   File file = new File("./fls/Test.png");
   BufferedImage image;
@@ -34,11 +33,11 @@ public class PatternDetermination { // filme wie falsch das ist
     	  Pattern pattern = new Pattern(3);
 	       for (int dX = -1; dX < 2; dX++) {
 	    	   for (int dY = -1; dY < 2; dY++) {
-	    		  int[] coords = get_pxlCoords_by_DeltaCoords(x, y, dX, dY);
-	    		  if(!allcolors.contains(new Color(image.getRGB(coords[0], coords[1])))) {
-	    			  allcolors.add(new Color(image.getRGB(coords[0], coords[1])));	   
+	    		  int[] coords = getPxlCoordsByDeltaCoords(x, y, dX, dY);
+	    		  if(!allColors.contains(new Color(image.getRGB(coords[0], coords[1])))) {
+	    			  allColors.add(new Color(image.getRGB(coords[0], coords[1])));
 	    		  }
-	    		  pattern.setPixelColor(dX+1, dY+1, allcolors.indexOf(new Color(image.getRGB(coords[0], coords[1]))));
+	    		  pattern.setPixelColor(dX+1, dY+1, allColors.indexOf(new Color(image.getRGB(coords[0], coords[1]))));
 	    	  }
 	       }
 	       if(patterns.contains(pattern)) {
@@ -50,7 +49,7 @@ public class PatternDetermination { // filme wie falsch das ist
     }
   }
   
-  private int[] get_pxlCoords_by_DeltaCoords (int x,int y, int deltX, int deltY) {
+  private int[] getPxlCoordsByDeltaCoords(int x, int y, int deltX, int deltY) {
 	  int[] coords = new int[2];
 	  coords[0] = (((x+deltX) % image.getHeight())+image.getHeight()) % image.getHeight();
 	  coords[1] = (((y+deltY) % image.getWidth())+image.getWidth()) % image.getWidth();

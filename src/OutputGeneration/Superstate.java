@@ -5,36 +5,36 @@ import PatternDetermination.Pattern;
 import java.util.Arrays;
 
 public class Superstate {
-  int x;
-  int y;
+  int xCoord;
+  int yCoord;
   GeneratorMain generatorMain;
 
-  boolean[] possible_patterns;
-  public boolean[] possible_colors;
-  int pattern_size;
+  boolean[] possiblePatterns;
+  public boolean[] possibleColors;
+  int patternSize;
 
-  public Superstate(int x, int y, GeneratorMain generatorMain, int num_patterns, int num_colors) {
-    this.x = x;
-    this.y = y;
+  public Superstate(int xCoord, int yCoord, GeneratorMain generatorMain, int numPatterns, int numColors) {
+    this.xCoord = xCoord;
+    this.yCoord = yCoord;
     this.generatorMain = generatorMain;
 
-    pattern_size = generatorMain.getPattern(0).getSize();
+    patternSize = generatorMain.getPattern(0).getSize();
 
     //initialize possible_patterns and possible_colors
-    this.possible_patterns = new boolean[num_patterns];
-    this.possible_colors = new boolean[num_colors];
-    for (int i = 0; i < num_patterns; i++) {
-      possible_patterns[i] = true;
+    this.possiblePatterns = new boolean[numPatterns];
+    this.possibleColors = new boolean[numColors];
+    for (int i = 0; i < numPatterns; i++) {
+      possiblePatterns[i] = true;
     }
-    for (int i = 0; i < num_colors; i++) {
-      possible_colors[i] = true;
+    for (int i = 0; i < numColors; i++) {
+      possibleColors[i] = true;
     }
   }
 
   //calculate how "well-defined" the pixel is
   public int getNumberOfPossibilities() {
     int n = 0;
-    for (boolean i : possible_colors) {
+    for (boolean i : possibleColors) {
       if (i) {
         n++;
       }
@@ -45,136 +45,136 @@ public class Superstate {
   //collapses the pixel. runs a recursion for collapse of nearby pixels after
   public void collapse() {
     //choose random color for the Superstate out of available
-    System.out.println("Pixel collapsed: " + x + " " + y);
-    int num_possible_Pattern = 0;
-    int pattern_ID = 0;
-    for (boolean i : possible_patterns) {
+    System.out.println("Pixel collapsed: " + xCoord + " " + yCoord);
+    int numPossiblePattern = 0;
+    int patternID = 0;
+    for (boolean i : possiblePatterns) {
       if (i) {
-        num_possible_Pattern++;
+        numPossiblePattern++;
       }
     }
 
-    int rand = (int) (Math.random() * num_possible_Pattern);
+    int rand = (int) (Math.random() * numPossiblePattern);
 
-    for (int i = 0; i < possible_patterns.length; i++) { // farbe? oder nicht eher pattern?
-      if (!possible_patterns[i]) {
+    for (int i = 0; i < possiblePatterns.length; i++) { // farbe? oder nicht eher pattern?
+      if (!possiblePatterns[i]) {
         continue;
       }
       if (rand == 0) {
-        Arrays.fill(possible_patterns, false); // pattern wird ausgewählt
-        possible_patterns[i] = true;
-        pattern_ID = i;
+        Arrays.fill(possiblePatterns, false); // pattern wird ausgewählt
+        possiblePatterns[i] = true;
+        patternID = i;
         break;
       }
       rand--;
     }
 
-    System.out.println("Pattern chosen: " + pattern_ID);
+    System.out.println("Pattern chosen: " + patternID);
 
     // after choosing the Pattern, we set the colors of the neighbouring Superstates to the color of the chosen pattern
 
-    Pattern pattern = generatorMain.patterns[pattern_ID];
-    int mid = pattern_size / 2;
-    for (int x = 0; x < pattern_size; x++) {
-      for (int y = 0; y < pattern_size; y++) {
-        Arrays.fill(getST_By_Delta_Coords(x - mid, y - mid).possible_colors, false);
-        getST_By_Delta_Coords(x - mid, y - mid).possible_colors[pattern.map[x][y]] = true;
+    Pattern pattern = generatorMain.patterns[patternID];
+    int mid = patternSize / 2;
+    for (int x = 0; x < patternSize; x++) {
+      for (int y = 0; y < patternSize; y++) {
+        Arrays.fill(getSTByDeltaCoords(x - mid, y - mid).possibleColors, false);
+        getSTByDeltaCoords(x - mid, y - mid).possibleColors[pattern.map[x][y]] = true;
       }
     }
 
-    for (int x = 0; x < pattern_size; x++) {
-      for (int y = 0; y < pattern_size; y++) {
-        getST_By_Delta_Coords(x - mid, y - mid).update_state(0, true);
+    for (int x = 0; x < patternSize; x++) {
+      for (int y = 0; y < patternSize; y++) {
+        getSTByDeltaCoords(x - mid, y - mid).updateState(0, true);
       }
     }
     //bis hier hin funktioniert der code
   }
 
-  public void update_state(int depth, boolean changedColor) {
+  public void updateState(int depth, boolean changedColor) {
     for (int i = 0; i < depth; i++) {
       System.out.print("-");
     }
-    System.out.println("State updated: " + x + " " + y);
-    int mid = pattern_size / 2;
+    System.out.println("State updated: " + xCoord + " " + yCoord);
+    int mid = patternSize / 2;
 
     //Update own possible patterns
-    for (int i = 0; i < possible_patterns.length; i++) {
-      if (!possible_patterns[i]) {
+    for (int i = 0; i < possiblePatterns.length; i++) {
+      if (!possiblePatterns[i]) {
         continue;
       }
       Pattern p = generatorMain.getPattern(i);
       boolean possible = true;
       for (int x = 0; x < p.getSize(); x++) {
         for (int y = 0; y < p.getSize(); y++) {
-          if (!getST_By_Delta_Coords(x - mid, y - mid).get_color_possible(p.map[x][y])) {
+          if (!getSTByDeltaCoords(x - mid, y - mid).getColorPossible(p.map[x][y])) {
             possible = false;
           }
         }
       }
       if (!possible) {
-        possible_patterns[i] = false;
+        possiblePatterns[i] = false;
       }
     }
 
     //Update surrounding possible colors
-    int[][] num_possible_colors_map = new int[pattern_size][pattern_size];
+    int[][] numPossibleColorsMap = new int[patternSize][patternSize];
 
-    for (int x = 0; x < pattern_size; x++) {
-      for (int y = 0; y < pattern_size; y++) {
-        int num_possible_colors = 0;
-        for (boolean i : getST_By_Delta_Coords(x - mid, y - mid).possible_colors) {
+    for (int x = 0; x < patternSize; x++) {
+      for (int y = 0; y < patternSize; y++) {
+        int numPossibleColors = 0;
+        for (boolean i : getSTByDeltaCoords(x - mid, y - mid).possibleColors) {
           if (i) {
-            num_possible_colors++;
+            numPossibleColors++;
           }
         }
-        num_possible_colors_map[x][y] = num_possible_colors;
-        Arrays.fill(getST_By_Delta_Coords(x - mid, y - mid).possible_colors, false);
+        numPossibleColorsMap[x][y] = numPossibleColors;
+        Arrays.fill(getSTByDeltaCoords(x - mid, y - mid).possibleColors, false);
       }
     }
 
-    for (int i = 0; i < possible_patterns.length; i++) {
-      if (!possible_patterns[i]) {
+    for (int i = 0; i < possiblePatterns.length; i++) {
+      if (!possiblePatterns[i]) {
         continue;
       }
       Pattern p = generatorMain.getPattern(i);
       for (int x = 0; x < p.getSize(); x++) {
         for (int y = 0; y < p.getSize(); y++) {
-          getST_By_Delta_Coords(x - mid, y - mid).possible_colors[p.map[x][y]] = true;
+          getSTByDeltaCoords(x - mid, y - mid).possibleColors[p.map[x][y]] = true;
         }
       }
     }
 
     generatorMain.debugMap();
 
-    for (int x = 0; x < pattern_size; x++) {
-      for (int y = 0; y < pattern_size; y++) {
-        int num_possible_colors = 0;
-        for (boolean i : getST_By_Delta_Coords(x - mid, y - mid).possible_colors) {
+    for (int x = 0; x < patternSize; x++) {
+      for (int y = 0; y < patternSize; y++) {
+        int numPossibleColors = 0;
+        for (boolean i : getSTByDeltaCoords(x - mid, y - mid).possibleColors) {
           if (i) {
-            num_possible_colors++;
+            numPossibleColors++;
           }
         }
-        if (num_possible_colors < num_possible_colors_map[x][y] || changedColor) {
-          getST_By_Delta_Coords(x - mid, y - mid).update_state(depth+1, num_possible_colors < num_possible_colors_map[x][y]);
+        if (numPossibleColors < numPossibleColorsMap[x][y] || changedColor) {
+          getSTByDeltaCoords(x - mid, y - mid).updateState(depth+1, numPossibleColors < numPossibleColorsMap[x][y]);
         }
       }
     }
   }
 
-  private Superstate getST_By_Delta_Coords(int deltX, int deltY) {
-    return generatorMain.map[(((x + deltX) % generatorMain.map.length) + generatorMain.map.length) % generatorMain.map.length][(((y + deltY) % generatorMain.map[0].length) + generatorMain.map.length) % generatorMain.map.length];
+  private Superstate getSTByDeltaCoords(int deltaX, int deltaY) {
+    return generatorMain.map[(((xCoord + deltaX) % generatorMain.map.length) + generatorMain.map.length) % generatorMain.map.length][(((yCoord + deltaY) % generatorMain.map[0].length) + generatorMain.map.length) % generatorMain.map.length];
   }
 
-  public boolean get_color_possible(int index) {
-    return possible_colors[index];
+  public boolean getColorPossible(int index) {
+    return possibleColors[index];
   }
 
-  public int print_color() {
+  public int printColor() {
     if (getNumberOfPossibilities() != 1) {
       return -1;
     }
-    for (int i = 0; i < possible_colors.length; i++) {
-      if (possible_colors[i]) {
+    for (int i = 0; i < possibleColors.length; i++) {
+      if (possibleColors[i]) {
         return i;
       }
     }
