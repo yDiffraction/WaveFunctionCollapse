@@ -66,11 +66,12 @@ public class GenHub {
         countColors = 2;
 
         patternGen = new PatternDetermination();
-        outputGen = new GeneratorMain(patterns, countColors, 5, 5);
+        outputGen = new GeneratorMain(patterns, countColors, 16, 16);
     }
 
     public void genOutput() {
         outputGen.run();
+        System.out.println("Output");
         for (Superstate[] x : outputGen.map) {
             for (Superstate y : x) {
                 System.out.print(y.print_color() + " ");
