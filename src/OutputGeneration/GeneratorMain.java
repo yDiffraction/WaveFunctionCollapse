@@ -25,20 +25,21 @@ public class GeneratorMain {
   public void run() {
     while (!collapsed) {
       collapsed = !collapse();
-      for (Superstate[] x : map) {
-        for (Superstate y : x) {
-          System.out.print(y.getNumberOfPossibilities() + " ");
-        }
-        System.out.print("\n");
-      }
-      System.out.print("\n");
+      //System.out.println("run once");
+      //for (Superstate[] x : map) {
+      //  for (Superstate y : x) {
+      //    System.out.print(y.getNumberOfPossibilities() + " ");
+      //  }
+      //  System.out.print("\n");
+      //}
+      //System.out.print("\n");
     }
   }
   
   //choose the right pixel to collapse, then collapse it
   private boolean collapse () {
-    int choosenSt_X = 0;
-    int choosenSt_Y = 0;
+    int chosenSt_X = 0;
+    int chosenSt_Y = 0;
 
     int minPossibilities = colorsCount;
     int maxPossibilities = 0;
@@ -47,8 +48,8 @@ public class GeneratorMain {
         int possibilities = map[x][y].getNumberOfPossibilities();
 
         if (possibilities <= minPossibilities) {
-          choosenSt_X = x;
-          choosenSt_Y = y;
+          chosenSt_X = x;
+          chosenSt_Y = y;
           minPossibilities = possibilities;
         }
         maxPossibilities = Math.max(maxPossibilities, possibilities);
@@ -59,7 +60,7 @@ public class GeneratorMain {
     if (maxPossibilities == 1) {
       return false;
     }
-    map[choosenSt_X][choosenSt_Y].collapse();
+    map[chosenSt_X][chosenSt_Y].collapse();
     return true;
   }
 

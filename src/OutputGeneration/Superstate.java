@@ -68,6 +68,8 @@ public class Superstate {
       rand--;
     }
 
+    //System.out.println(pattern_ID);
+
     // after choosing the Pattern, we set the colors of the neighbouring Superstates to the color of the chosen pattern
 
     Pattern pattern = generatorMain.patterns[pattern_ID];
@@ -78,15 +80,14 @@ public class Superstate {
           if (i == pattern.map[x][y]) {
             Arrays.fill(getST_By_Delta_Coords(x - mid, y - mid).possible_colors, false);
             getST_By_Delta_Coords(x - mid, y - mid).possible_colors[i] = true;
-            continue;
+            getST_By_Delta_Coords(x - mid, y - mid).update_state();
+            break;
           }
-
-          getST_By_Delta_Coords(x - mid, y - mid).possible_colors[i] = false;
         }
       }
     }
     //bis hier hin funktioniert der code;
-    update_state();
+    //update_state();
   }
 
   public void update_state() {
@@ -111,6 +112,11 @@ public class Superstate {
       }
     }
 
+      //for (boolean possiblePattern : possible_patterns) {
+      //    System.out.print(possiblePattern + " ");
+      //}
+      //System.out.print("\n");
+
     //Update surrounding possible colors
     int[][] num_possible_colors_map = new int[pattern_size][pattern_size];
 
@@ -127,14 +133,15 @@ public class Superstate {
       }
     }
 
-    for (int i = 0; i < possible_colors.length; i++) {
-      if (!possible_colors[i]) {
+    for (int i = 0; i < possible_patterns.length; i++) {
+      if (!possible_patterns[i]) {
         continue;
       }
       Pattern p = generatorMain.getPattern(i);
       for (int x = 0; x < p.getSize(); x++) {
         for (int y = 0; y < p.getSize(); y++) {
           getST_By_Delta_Coords(x - mid, y - mid).possible_colors[p.map[x][y]] = true;
+          //System.out.println("a");
         }
       }
     }
@@ -152,6 +159,13 @@ public class Superstate {
         }
       }
     }
+    //for (Superstate[] x : generatorMain.map) {
+    //  for (Superstate y : x) {
+    //    System.out.print(y.getNumberOfPossibilities() + " ");
+    //  }
+    //  System.out.print("\n");
+    //}
+    //System.out.print("\n");
   }
 
   private Superstate getST_By_Delta_Coords(int deltX, int deltY) {
