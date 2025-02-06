@@ -2,6 +2,12 @@ package OutputGeneration;
 
 import PatternDetermination.Pattern;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 
 public class GeneratorMain {
   Pattern[] patterns;
@@ -81,5 +87,28 @@ public class GeneratorMain {
 
   public Pattern getPattern(int index) {
     return patterns[index];
+  }
+
+  public void saveImg(Color[] colors) {
+    BufferedImage img = new BufferedImage(map.length, map[0].length, BufferedImage.TYPE_INT_RGB);
+
+    for (int x = 0; x < map.length; x++) {
+      for (int y = 0; y < map[0].length; y++) {
+
+        for (int i = 0; i < map[x][y].possibleColors.length; i++) {
+          if (map[x][y].possibleColors[i]) {
+            img.setRGB(x,y, colors[i].getRGB());
+          }
+        }
+      }
+    }
+
+    try {
+      BufferedImage bi = img;  // retrieve image
+      File outputfile = new File("./res/saved.png");
+      ImageIO.write(bi, "png", outputfile);
+    } catch (IOException e) {
+      // handle exception
+    }
   }
 }

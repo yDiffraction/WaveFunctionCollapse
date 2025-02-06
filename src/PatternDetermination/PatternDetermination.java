@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PatternDetermination {
-  public ArrayList<Color> allColors = new ArrayList<Color>();//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
+  public Color[] allColors;//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
   public ArrayList<Pattern> patterns = new ArrayList<Pattern>();
-  File file = new File("./fls/ScalesMaze.png");
+  File file = new File("./fls/Test.png");
   BufferedImage image;
   
   public PatternDetermination(){
@@ -22,7 +22,9 @@ public class PatternDetermination {
     
 
   }
-  public void loadPatterns() {
+  public Pattern[] loadPatterns() {
+	  ArrayList<Color> allColors = new ArrayList<>();
+
 	  // determinate Patterns from inpImg
 	  for (int x = 0; x < image.getHeight(); x++) {
 		  for (int y = 0; y < image.getWidth(); y++) {
@@ -51,13 +53,19 @@ public class PatternDetermination {
 			  }
 		  }
 	  }
-	  System.out.println();
+
+	  this.allColors = new Color[allColors.size()];
+	  this.allColors = allColors.toArray(this.allColors);
+
+	  Pattern[] returnPats = new Pattern[patterns.size()];
+	  returnPats = patterns.toArray(returnPats);
+	  return returnPats;
   }
   
   private int[] getPxlCoordsByDeltaCoords(int x, int y, int deltX, int deltY) {
 	  int[] coords = new int[2];
-	  coords[0] = (((x+deltX) % image.getHeight())+image.getHeight()) % image.getHeight();
-	  coords[1] = (((y+deltY) % image.getWidth())+image.getWidth()) % image.getWidth();
+	  coords[0] = (((x + deltX) % image.getWidth()) + image.getWidth()) % image.getWidth();
+	  coords[1] = (((y + deltY) % image.getHeight()) + image.getHeight()) % image.getHeight();
 	  return coords;
   }
   private void loadImg() {

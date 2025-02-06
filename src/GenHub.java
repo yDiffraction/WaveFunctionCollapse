@@ -13,62 +13,13 @@ public class GenHub {
 
     public GenHub() {
         //List of patterns for use in generating image
-        patterns[0] = new Pattern(new int[][]{
-                {0,0,0},
-                {0,1,0},
-                {0,0,0}
-        }, 1);
-        patterns[1] = new Pattern(new int[][]{
-                {1,0,0},
-                {0,0,0},
-                {0,0,0}
-        }, 1);
-        patterns[2] = new Pattern(new int[][]{
-                {0,1,0},
-                {0,0,0},
-                {0,0,0}
-        }, 1);
-        patterns[3] = new Pattern(new int[][]{
-                {0,0,1},
-                {0,0,0},
-                {0,0,0}
-        }, 1);
-        patterns[4] = new Pattern(new int[][]{
-                {0,0,0},
-                {1,0,0},
-                {0,0,0}
-        }, 1);
-        patterns[5] = new Pattern(new int[][]{
-                {0,0,0},
-                {0,0,1},
-                {0,0,0}
-        }, 1);
-        patterns[6] = new Pattern(new int[][]{
-                {0,0,0},
-                {0,0,0},
-                {1,0,0}
-        }, 1);
-        patterns[7] = new Pattern(new int[][]{
-                {0,0,0},
-                {0,0,0},
-                {0,1,0}
-        }, 1);
-        patterns[8] = new Pattern(new int[][]{
-                {0,0,0},
-                {0,0,0},
-                {0,0,1}
-        }, 1);
-        patterns[9] = new Pattern(new int[][]{
-                {0,0,0},
-                {0,0,0},
-                {0,0,0}
-        }, 1);
-        countColors = 2;
 
         patternGen = new PatternDetermination();
-        patternGen.loadPatterns();
+        patterns = patternGen.loadPatterns();
+        countColors = patternGen.allColors.length;
 
         outputGen = new GeneratorMain(patterns, countColors, 16, 16);
+        outputGen.saveImg(patternGen.allColors);
     }
 
     public void genOutput() {
