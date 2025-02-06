@@ -69,7 +69,7 @@ public class Superstate {
       rand--;
     }
 
-    System.out.println("Pattern chosen: " + patternID);
+    //System.out.println("Pattern chosen: " + patternID);
 
     // after choosing the Pattern, we set the colors of the neighbouring Superstates to the color of the chosen pattern
 
@@ -87,14 +87,13 @@ public class Superstate {
         getSTByDeltaCoords(x - mid, y - mid).updateState(0, true);
       }
     }
-    //bis hier hin funktioniert der code
   }
 
   public void updateState(int depth, boolean changedColor) {
-    for (int i = 0; i < depth; i++) {
+    /*for (int i = 0; i < depth; i++) {
       System.out.print("-");
     }
-    System.out.println("State updated: " + xCoord + " " + yCoord);
+    System.out.println("State updated: " + xCoord + " " + yCoord);*/
     int mid = patternSize / 2;
 
     //Update own possible patterns
@@ -127,8 +126,8 @@ public class Superstate {
             numPossibleColors++;
           }
         }
-        numPossibleColorsMap[x][y] = numPossibleColors;
-        Arrays.fill(getSTByDeltaCoords(x - mid, y - mid).possibleColors, false);
+        numPossibleColorsMap[x][y] = numPossibleColors; // how many possible colors before update
+        Arrays.fill(getSTByDeltaCoords(x - mid, y - mid).possibleColors, false); // all colors to false, in order to correct the possible colors later
       }
     }
 
@@ -139,12 +138,12 @@ public class Superstate {
       Pattern p = generatorMain.getPattern(i);
       for (int x = 0; x < p.getSize(); x++) {
         for (int y = 0; y < p.getSize(); y++) {
-          getSTByDeltaCoords(x - mid, y - mid).possibleColors[p.map[x][y]] = true;
+          getSTByDeltaCoords(x - mid, y - mid).possibleColors[p.map[x][y]] = true; // go through all patterns and ST, to correct possible colors
         }
       }
     }
 
-    generatorMain.debugMap();
+    //generatorMain.debugMap();
 
     for (int x = 0; x < patternSize; x++) {
       for (int y = 0; y < patternSize; y++) {

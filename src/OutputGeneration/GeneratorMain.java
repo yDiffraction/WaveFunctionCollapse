@@ -23,13 +23,13 @@ public class GeneratorMain {
 
   //main loop
   public void run() {
-    debugMap();
+    //debugMap();
     while (!collapsed) {
       collapsed = !collapse();
-      if (!collapsed) {
+      /*if (!collapsed) {
         System.out.println("----------------------------------Code Ran----------------------------------");
         debugMap();
-      }
+      }*/
     }
   }
 
