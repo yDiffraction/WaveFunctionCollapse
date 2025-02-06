@@ -23,23 +23,38 @@ public class GeneratorMain {
 
   //main loop
   public void run() {
+    debugMap();
     while (!collapsed) {
       collapsed = !collapse();
-      //System.out.println("run once");
-      //for (Superstate[] x : map) {
-      //  for (Superstate y : x) {
-      //    System.out.print(y.getNumberOfPossibilities() + " ");
-      //  }
-      //  System.out.print("\n");
-      //}
-      //System.out.print("\n");
+      if (!collapsed) {
+        System.out.println("----------------------------------Code Ran----------------------------------");
+        debugMap();
+      }
     }
+  }
+
+  public void debugMap() {
+    for (Superstate[] x : map) {
+      for (Superstate y : x) {
+        System.out.print("[");
+        for (boolean i : y.possibleColors) {
+          System.out.print(i ? "1" : "0");
+        }
+        System.out.print("][");
+        for (boolean i : y.possiblePatterns) {
+          System.out.print(i ? "1" : "0");
+        }
+        System.out.print("], ");
+      }
+      System.out.print("\n");
+    }
+    System.out.print("\n");
   }
   
   //choose the right pixel to collapse, then collapse it
   private boolean collapse () {
-    int chosenSt_X = 0;
-    int chosenSt_Y = 0;
+    int chosenStX = 0;
+    int chosenStY = 0;
 
     int minPossibilities = colorsCount;
     int maxPossibilities = 0;
@@ -47,9 +62,9 @@ public class GeneratorMain {
       for (int y = 0; y < map[0].length; y++) {
         int possibilities = map[x][y].getNumberOfPossibilities();
 
-        if (possibilities <= minPossibilities) {
-          chosenSt_X = x;
-          chosenSt_Y = y;
+        if (possibilities <= minPossibilities && possibilities != 1) {
+          chosenStX = x;
+          chosenStY = y;
           minPossibilities = possibilities;
         }
         maxPossibilities = Math.max(maxPossibilities, possibilities);
@@ -60,7 +75,7 @@ public class GeneratorMain {
     if (maxPossibilities == 1) {
       return false;
     }
-    map[chosenSt_X][chosenSt_Y].collapse();
+    map[chosenStX][chosenStY].collapse();
     return true;
   }
 

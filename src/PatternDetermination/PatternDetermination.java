@@ -1,31 +1,59 @@
 package PatternDetermination;
 
-import java.awt.*;
-import java.io.*;
-import java.util.Set;
+import javax.imageio.ImageIO;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class PatternDetermination { // filme wie falsch das ist
-  /*public Set<Integer> allcolors;//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
-  Pattern[] patterns = new Pattern[0];
-  File file = new File(“WaveFunctionCollapse/src/PatternDetermination/Test.png”);
+  public ArrayList<Color> allColors = new ArrayList<Color>();//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
+  public ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+  File file = new File("./fls/Test.png");
+  BufferedImage image;
   
-  public PatternDetermination() {
+  public PatternDetermination(){
     // Bild laden
-    BufferedImage image = ImageIO.read(file);
+	  this.image = null;
+	  try {
+	      image = ImageIO.read(file);
+	  } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	  }
     
+	  //Loop -> bestimmung aller Patterns -> die erste Farbe ist ID/Index 0 -> Arraylist(Colors).add(neue Farbe)
+	  // Arraylist(Colors) -> allcolores 
     // allen farben einen wert zuweisen
-    for (int h = 0; h < image.getHeight(); h++) {
-      for int w = 0; w < image.getWidth(); w++) {
-        allcolors.add(getRGB(w,h));
-      }
-    }
     
-    // alle felder mit mindestens einem abstand von 1 zum rand abgehen 
-    for (int h = 1; h < image.getHeight()-1; h++) {
-      for (int w = 1; w < image.getWidth()-1; w++) {
-        patterns.push(new Pattern());
-      }
+    for (int x = 0; x < image.getHeight(); x++) {
+      for (int y = 0; y < image.getWidth(); y++) {
+    	  Pattern pattern = new Pattern(3);
+	       for (int dX = -1; dX < 2; dX++) {
+	    	   for (int dY = -1; dY < 2; dY++) {
+	    		  int[] coords = getPxlCoordsByDeltaCoords(x, y, dX, dY);
+	    		  if(!allColors.contains(new Color(image.getRGB(coords[0], coords[1])))) {
+	    			  allColors.add(new Color(image.getRGB(coords[0], coords[1])));
+	    		  }
+	    		  pattern.setPixelColor(dX+1, dY+1, allColors.indexOf(new Color(image.getRGB(coords[0], coords[1]))));
+	    	  }
+	       }
+	       if(patterns.contains(pattern)) {
+	    	   patterns.get(patterns.indexOf(pattern)).addWeight();
+	       }else {
+	    	   patterns.add(pattern);
+	       }
+      	}
     }
-  }*/
+  }
+  
+  private int[] getPxlCoordsByDeltaCoords(int x, int y, int deltX, int deltY) {
+	  int[] coords = new int[2];
+	  coords[0] = (((x+deltX) % image.getHeight())+image.getHeight()) % image.getHeight();
+	  coords[1] = (((y+deltY) % image.getWidth())+image.getWidth()) % image.getWidth();
+	  return coords;
+  }
 
 }
