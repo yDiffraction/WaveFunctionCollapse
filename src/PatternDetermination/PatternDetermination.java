@@ -61,7 +61,8 @@ public class PatternDetermination {
 	  returnPats = patterns.toArray(returnPats);
 	  return returnPats;
   }
-  
+
+	// den gesuchten Pixel der ausserhalb des Bildes ist auf die andere Seite des Bildes schieben
   private int[] getPxlCoordsByDeltaCoords(int x, int y, int deltX, int deltY) {
 	  int[] coords = new int[2];
 	  coords[0] = (((x + deltX) % image.getWidth()) + image.getWidth()) % image.getWidth();
