@@ -18,8 +18,7 @@ public class GenHub {
         patterns = patternGen.loadPatterns();
         countColors = patternGen.allColors.length;
 
-        outputGen = new GeneratorMain(patterns, countColors, 16, 16);
-        outputGen.saveImg(patternGen.allColors);
+        outputGen = new GeneratorMain(patterns, countColors, 11, 11);
     }
 
     public void genOutput() {
@@ -31,6 +30,7 @@ public class GenHub {
             }
             System.out.print("\n");
         }
+        outputGen.saveImg(patternGen.allColors);
     }
 
     public void setPatterns(Pattern[] patterns) {

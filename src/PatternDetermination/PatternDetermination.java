@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class PatternDetermination {
   public Color[] allColors;//die erste Farbe, die ein ein Pattern hinzugefügt wird ist 0 -> immer so weiter -> sepertate Liste mit Farben der Farbindexwerten, um später aus Indesxwerten wieder farben zu machen
   public ArrayList<Pattern> patterns = new ArrayList<Pattern>();
-  File file = new File("./fls/Test.png");
+  File file = new File("./fls/Angular.png");
   BufferedImage image;
   
   public PatternDetermination(){

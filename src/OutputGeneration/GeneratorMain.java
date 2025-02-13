@@ -10,6 +10,8 @@ import java.io.IOException;
 
 
 public class GeneratorMain {
+  public boolean debugMode = false;
+  private int countCollapse = 0;
   Pattern[] patterns;
   int colorsCount;
   public Superstate[][] map;
@@ -32,10 +34,10 @@ public class GeneratorMain {
     //debugMap();
     while (!collapsed) {
       collapsed = !collapse();
-      /*if (!collapsed) {
+      if (!collapsed && debugMode) {
         System.out.println("----------------------------------Code Ran----------------------------------");
         debugMap();
-      }*/
+      }
     }
   }
 
@@ -59,6 +61,10 @@ public class GeneratorMain {
   
   //choose the right pixel to collapse, then collapse it
   private boolean collapse () {
+    countCollapse++;
+    if (countCollapse==map.length*map[0].length) {
+      debugMode = true;
+    }
     int chosenStX = 0;
     int chosenStY = 0;
 
@@ -108,7 +114,7 @@ public class GeneratorMain {
       File outputfile = new File("./res/saved.png");
       ImageIO.write(bi, "png", outputfile);
     } catch (IOException e) {
-      // handle exception
+      System.out.println("hat nicht funktioniert");
     }
   }
 }

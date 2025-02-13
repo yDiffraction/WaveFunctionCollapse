@@ -69,7 +69,7 @@ public class Superstate {
       rand--;
     }
 
-    //System.out.println("Pattern chosen: " + patternID);
+    System.out.println("Pattern chosen: " + patternID);
 
     // after choosing the Pattern, we set the colors of the neighbouring Superstates to the color of the chosen pattern
 
@@ -90,10 +90,12 @@ public class Superstate {
   }
 
   public void updateState(int depth, boolean changedColor) {
-    /*for (int i = 0; i < depth; i++) {
-      System.out.print("-");
+    if (generatorMain.debugMode) {
+      for (int i = 0; i < depth; i++) {
+        System.out.print("-");
+      }
+      System.out.println("State updated: " + xCoord + " " + yCoord);
     }
-    System.out.println("State updated: " + xCoord + " " + yCoord);*/
     int mid = patternSize / 2;
 
     //Update own possible patterns
@@ -143,7 +145,9 @@ public class Superstate {
       }
     }
 
-    //generatorMain.debugMap();
+    if (generatorMain.debugMode) {
+      generatorMain.debugMap();
+    }
 
     for (int x = 0; x < patternSize; x++) {
       for (int y = 0; y < patternSize; y++) {
