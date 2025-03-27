@@ -9,7 +9,7 @@ public class GenHub {
 
     public int countColors;//die anzahl an Farben in einem Int reichen aus als Info, weil bei z.B. 5 Farben gibt es Farben 0, 1, 2, 3, 4 ->
     public Pattern[] patterns = new Pattern[10];
-    private int size = 32;
+    private int size = 512;
     private String name = "Link";
 
 
