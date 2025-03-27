@@ -13,43 +13,45 @@ public class GeneratorMain {
   public boolean debugMode = false;
   private int countCollapse = 0;
   Pattern[] patterns;
-  int colorsCount;
   public Superstate[][] map;
   public boolean collapsed = false;
+  private String name;
 
-  public GeneratorMain(Pattern[] patterns, int colorsCount, int width, int height) {
+  public GeneratorMain(Pattern[] patterns, int colorsCount, int width, int height, String name) {
     this.patterns = patterns;
-    this.colorsCount = colorsCount;
     this.map = new Superstate[height][width];
+    this.name = name;
 
     for (int i = 0; i < this.map.length; i++) {
       for (int j = 0; j < this.map[0].length; j++) {
-        this.map[i][j] = new Superstate(i, j, this, patterns.length, this.colorsCount);
+        this.map[i][j] = new Superstate(i, j, this, patterns.length);
       }
     }
   }
 
   //main loop
-  public void run() {
-    //debugMap();
+  public boolean run() {
+    // debugMap();
+    countCollapse = 0;
     while (!collapsed) {
-      collapsed = !collapse();
+      int flag = collapse();
+      if (flag==2) {
+        return false;
+      }
+      collapsed = flag == 0;
       if (!collapsed && debugMode) {
         System.out.println("----------------------------------Code Ran----------------------------------");
         debugMap();
       }
     }
+    return true;
   }
 
   public void debugMap() {
     for (Superstate[] x : map) {
       for (Superstate y : x) {
         System.out.print("[");
-        for (boolean i : y.possibleColors) {
-          System.out.print(i ? "1" : "0");
-        }
-        System.out.print("][");
-        for (boolean i : y.possiblePatterns) {
+        for (boolean i : y.getPossiblePatterns()) {
           System.out.print(i ? "1" : "0");
         }
         System.out.print("], ");
@@ -58,21 +60,22 @@ public class GeneratorMain {
     }
     System.out.print("\n");
   }
-  
+
   //choose the right pixel to collapse, then collapse it
-  private boolean collapse () {
+  private int collapse () {
     countCollapse++;
-    if (countCollapse==map.length*map[0].length) {
+    if (countCollapse>=map.length*map[0].length) {
       debugMode = true;
     }
     int chosenStX = 0;
     int chosenStY = 0;
 
-    int minPossibilities = colorsCount;
+    int minPossibilities = patterns.length;
     int maxPossibilities = 0;
     for (int x = 0; x < map.length; x++) {
       for (int y = 0; y < map[0].length; y++) {
         int possibilities = map[x][y].getNumberOfPossibilities();
+        //System.out.print(possibilities + " ");
 
         if (possibilities <= minPossibilities && possibilities != 1) {
           chosenStX = x;
@@ -81,14 +84,18 @@ public class GeneratorMain {
         }
         maxPossibilities = Math.max(maxPossibilities, possibilities);
       }
+      //System.out.print("\n");
     }
 
     //tell the state to collapse. it will run a recursion collapsing all affected states
     if (maxPossibilities == 1) {
-      return false;
+      return 0;
+    }else if(maxPossibilities == 0) {
+      return 2;
     }
+
     map[chosenStX][chosenStY].collapse();
-    return true;
+    return 1;
   }
 
   public Pattern getPattern(int index) {
@@ -101,9 +108,11 @@ public class GeneratorMain {
     for (int x = 0; x < map.length; x++) {
       for (int y = 0; y < map[0].length; y++) {
 
-        for (int i = 0; i < map[x][y].possibleColors.length; i++) {
-          if (map[x][y].possibleColors[i]) {
-            img.setRGB(x,y, colors[i].getRGB());
+        for (int i = 0; i < map[x][y].getPossiblePatterns().length; i++) {
+          if (map[x][y].getPossiblePatterns()[i]) {
+            int mid = patterns[0].map.length / 2;
+            int rbg = patterns[i].map[mid][mid];
+            img.setRGB(x,y, colors[rbg].getRGB());
           }
         }
       }
@@ -111,7 +120,7 @@ public class GeneratorMain {
 
     try {
       BufferedImage bi = img;  // retrieve image
-      File outputfile = new File("./res/saved.png");
+      File outputfile = new File("./res/" + name + ".png");
       ImageIO.write(bi, "png", outputfile);
     } catch (IOException e) {
       System.out.println("hat nicht funktioniert");
