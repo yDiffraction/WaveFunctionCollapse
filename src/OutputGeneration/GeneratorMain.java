@@ -16,6 +16,7 @@ public class GeneratorMain {
   public Superstate[][] map;
   public boolean collapsed = false;
   private String name;
+  public final boolean wraparound = false;
 
   public GeneratorMain(Pattern[] patterns, int colorsCount, int width, int height, String name) {
     this.patterns = patterns;
@@ -75,7 +76,7 @@ public class GeneratorMain {
     for (int x = 0; x < map.length; x++) {
       for (int y = 0; y < map[0].length; y++) {
         int possibilities = map[x][y].getNumberOfPossibilities();
-        //System.out.print(possibilities + " ");
+        System.out.print(possibilities + " ");
 
         if (possibilities <= minPossibilities && possibilities != 1) {
           chosenStX = x;
@@ -84,7 +85,7 @@ public class GeneratorMain {
         }
         maxPossibilities = Math.max(maxPossibilities, possibilities);
       }
-      //System.out.print("\n");
+      System.out.print("\n");
     }
 
     //tell the state to collapse. it will run a recursion collapsing all affected states

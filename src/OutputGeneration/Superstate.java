@@ -149,8 +149,13 @@ public class Superstate implements State {
   private State getSTByDeltaCoords(int deltaX, int deltaY) {
     int x = xCoord + deltaX;
     int y = yCoord + deltaY;
-    if (x < 0 || y < 0 || x >= generatorMain.map.length || y >= generatorMain.map.length) {
-      return new FakeSuperstate(generatorMain, possiblePatterns.length);
+    if (!generatorMain.wraparound) {
+      if (x < 0 || y < 0 || x >= generatorMain.map.length || y >= generatorMain.map.length) {
+        return new FakeSuperstate(generatorMain, possiblePatterns.length);
+      }
+    }else {
+      x = ((x % generatorMain.map.length) + generatorMain.map.length) % generatorMain.map.length;
+      y = ((y % generatorMain.map.length) + generatorMain.map.length) % generatorMain.map.length;
     }
     return generatorMain.map[x][y];
     //return generatorMain.map[(((xCoord + deltaX) % generatorMain.map.length) + generatorMain.map.length) % generatorMain.map.length][(((yCoord + deltaY) % generatorMain.map[0].length) + generatorMain.map.length) % generatorMain.map.length];
